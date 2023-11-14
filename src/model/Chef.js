@@ -1,1 +1,1 @@
-class Chef {}
+export class Chef {}
