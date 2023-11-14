@@ -1,16 +1,18 @@
-import { STATE } from "../utils/constant.js";
+import { ORDER_STATE, SERVER_STATE } from '../utils/constant.js';
 
 export class Server {
   #id;
   #name;
   #runTime;
+  #order;
   #state;
 
   constructor(id, name, runTime) {
     this.#id = id;
     this.#name = name;
     this.#runTime = runTime;
-    this.#state = STATE.WAITING;
+    this.#order = null;
+    this.#state = SERVER_STATE.WAITING;
   }
 
   getId() {
@@ -29,18 +31,36 @@ export class Server {
     return this.#state;
   }
 
+  getOrder() {
+    return this.#order;
+  }
+
+  setOrder(order) {
+    this.#order = order;
+  }
+
   setState(state) {
     this.#state = state;
   }
 
-  serve(food) {
+  serve(order) {
     return new Promise((resolve) => {
-      this.setState(STATE.SERVING);
+      this.setState(SERVER_STATE.SERVING);
       setTimeout(() => {
-        food.setState(STATE.DONE);
-        this.setState(STATE.WAITING);
-        resolve(food);
+        order.setState(ORDER_STATE.DONE);
+        this.setState(SERVER_STATE.WAITING);
+        resolve(order);
       }, this.#runTime * 1000);
     });
   }
+
+  // async serve(order) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       order.setState(ORDER_STATE.DONE);
+  //       this.setState(SERVER_STATE.WAITING);
+  //       resolve(order);
+  //     }, this.#runTime * 1000);
+  //   });
+  // }
 }

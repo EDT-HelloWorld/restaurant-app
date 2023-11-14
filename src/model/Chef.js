@@ -1,4 +1,4 @@
-import { STATE } from "../utils/constant.js";
+import { CHEF_STATE, ORDER_STATE } from '../utils/constant.js';
 
 export class Chef {
   #id;
@@ -10,7 +10,7 @@ export class Chef {
     this.#id = id;
     this.#name = name;
     this.#order = null;
-    this.#state = STATE.WAITING;
+    this.#state = CHEF_STATE.WAITING;
   }
 
   getId() {
@@ -39,13 +39,20 @@ export class Chef {
 
   cook(order) {
     return new Promise((resolve) => {
-      this.setState(STATE.COOKING);
       setTimeout(() => {
-        order.getFood().setState(STATE.COOKED);
-        this.setState(STATE.WAITING);
-        this.setOrder(null);
-        resolve(order.getFood());
-      }, order.getFood().getCookTime());
+        resolve(order);
+      }, order.getFood().getCookTime() * 1000);
     });
   }
+
+  // async cook(order) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       order.setState(ORDER_STATE.COOKED);
+  //       this.setState(CHEF_STATE.WAITING);
+  //       this.setOrder(null);
+  //       resolve(order);
+  //     }, order.getFood().getCookTime() * 1000);
+  //   });
+  // }
 }

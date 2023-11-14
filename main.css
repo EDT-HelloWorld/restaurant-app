@@ -13,6 +13,11 @@
   gap: 5px;
 }
 
+.serve {
+  display: flex;
+  gap: 5px;
+}
+
 #group-order-buttons {
   display: flex;
   gap: 5px;

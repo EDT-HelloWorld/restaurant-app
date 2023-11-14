@@ -1,4 +1,4 @@
-import { STATE } from "../utils/constant.js";
+import { ORDER_STATE, CHEF_STATE } from '../utils/constant.js';
 
 export class CookController {
   constructor(restaurant, view) {
@@ -20,7 +20,7 @@ export class CookController {
         if (this.availableChefs.length > 0) {
           clearInterval(timerId);
           const chef = this.#getAvailableChef();
-          chef.setState(STATE.COOKING);
+          chef.setState(CHEF_STATE.COOKING);
           chef.setOrder(order);
           this.view.setUpdateChef(chef);
           resolve(chef);
@@ -34,6 +34,8 @@ export class CookController {
   }
 
   returnChef(chef) {
+    chef.setState(CHEF_STATE.WAITING);
+    chef.setOrder(null);
     this.availableChefs.push(chef);
   }
 }

@@ -1,13 +1,14 @@
-import { STATE } from "../utils/constant.js";
-import { Food } from "./Food.js";
+import { ORDER_STATE } from '../utils/constant.js';
 
 export class Order {
   #number;
   #food;
+  #state;
 
   constructor(number, food) {
     this.#number = number;
     this.#food = food;
+    this.#state = ORDER_STATE.WAITING;
   }
 
   getOrderNo() {
@@ -16,5 +17,13 @@ export class Order {
 
   getFood() {
     return this.#food;
+  }
+
+  getState() {
+    return this.#state;
+  }
+
+  setState(state) {
+    this.#state = state;
   }
 }
