@@ -3,9 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="main.css" />
     <title>RESTAURANT</title>
   </head>
   <body>
+    <h1>실습: 식당 시뮬레이션</h1>
+    <section id="group-order-buttons">
+      <button id="gukbap">국밥</button>
+      <button id="stake">스테이크</button>
+    </section>
+    <section class="display-live">
+      <div>
+        <h2>주문</h2>
+        <ul class="live-section" id="order-state">
+          <li class="order">
+            <span>김밥</span>
+            <span>대기</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>요리사</h2>
+        <ul class="live-section" id="chef-state">
+          <li class="chef">
+            <span>장금이</span>
+            <span>대기</span>
+          </li>
+          <li class="chef">
+            <span>백주부</span>
+            <span>대기</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>음식</h2>
+        <ul class="live-section" id="food-state">
+          <li class="food">
+            <span>김밥</span>
+            <span>대기</span>
+          </li>
+        </ul>
+      </div>
+    </section>
     <script src="main.js"></script>
   </body>
 </html>
