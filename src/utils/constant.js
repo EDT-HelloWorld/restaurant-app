@@ -9,3 +9,8 @@ export const SERVER_LIST = [
   { name: "서빙이", time: 1 },
   { name: "카운터", time: 2 },
 ];
+
+export const STATE = {
+  WAITING: "대기",
+  COOKING: "요리중",
+};
