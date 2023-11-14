@@ -39,6 +39,7 @@ export class RestaurantApp {
         chef.cook(order).then((food) => {
           this.#view.setUpdateChef(chef);
           this.#view.deleteOrder(order);
+
           this.ServerController.findAvailable().then((server) => {
             server.serve(food).then(() => {
               this.ServerController.returnServer(server);
