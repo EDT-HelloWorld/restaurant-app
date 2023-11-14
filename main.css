@@ -2,3 +2,18 @@
   list-style: none;
   padding: 0;
 }
+
+.order {
+  display: flex;
+  gap: 5px;
+}
+
+.chef {
+  display: flex;
+  gap: 5px;
+}
+
+#group-order-buttons {
+  display: flex;
+  gap: 5px;
+}

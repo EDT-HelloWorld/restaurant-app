@@ -1,15 +1,15 @@
 import { STATE } from "../utils/constant.js";
 
-export class Chef {
+export class Server {
   #id;
   #name;
-  #order;
+  #runTime;
   #state;
 
-  constructor(id, name) {
+  constructor(id, name, runTime) {
     this.#id = id;
     this.#name = name;
-    this.#order = null;
+    this.#runTime = runTime;
     this.#state = STATE.WAITING;
   }
 
@@ -21,31 +21,26 @@ export class Chef {
     return this.#name;
   }
 
-  getOrder() {
-    return this.#order;
+  getRunTime() {
+    return this.#runTime;
   }
 
   getState() {
     return this.#state;
   }
 
-  setOrder(order) {
-    this.#order = order;
-  }
-
   setState(state) {
     this.#state = state;
   }
 
-  cook(order) {
+  serve(food) {
     return new Promise((resolve) => {
-      this.setState(STATE.COOKING);
+      this.setState(STATE.SERVING);
       setTimeout(() => {
-        order.getFood().setState(STATE.COOKED);
+        food.setState(STATE.DONE);
         this.setState(STATE.WAITING);
-        this.setOrder(null);
-        resolve(order.getFood());
-      }, order.getFood().getCookTime());
+        resolve(food);
+      }, this.#runTime * 1000);
     });
   }
 }

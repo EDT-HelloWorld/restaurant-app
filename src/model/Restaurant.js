@@ -1,29 +1,56 @@
-import { OrderController } from "../controller/OrderController.js";
-import { View } from "../view/View.js";
+import { CHEF_LIST, SERVER_LIST, STATE } from "../utils/constant.js";
+import { Chef } from "./Chef.js";
+import { Food } from "./Food.js";
+import { Order } from "./Order.js";
+import { Server } from "./Server.js";
 
 export class Restaurant {
-  #name;
+  #number;
+  #orders;
+  #chefs;
+  #servers;
 
-  constructor(name) {
-    this.#name = name;
-    this.view = new View();
-    this.OrderController = new OrderController();
-    this.triggerEvent();
+  constructor() {
+    this.#number = 0;
+    this.#orders = [];
+    this.#chefs = [];
+    this.#servers = [];
+    this.setChef();
+    this.setServer();
   }
 
-  getName() {
-    return this.#name;
+  addOrder(foodName) {
+    const food = new Food(foodName);
+    const order = new Order(this.#number++, food);
+    this.#orders.push(order);
+    return order;
   }
 
-  triggerEvent() {
-    this.view.setClickOrder(this.addOrder.bind(this));
+  getNextOrder() {
+    return this.#orders.find(
+      (order) => order.getFood().getState() === STATE.WAITING
+    );
   }
 
-  addOrder(menuName) {
-    console.log(menuName);
+  setChef() {
+    for (let [key, chefInfo] of Object.entries(CHEF_LIST)) {
+      const chef = new Chef(key, chefInfo.name);
+      this.#chefs.push(chef);
+    }
   }
 
-  start() {
-    console.log(`${this.#name} RestaurantApp is started`);
+  setServer() {
+    for (let [key, ServerInfo] of Object.entries(SERVER_LIST)) {
+      const server = new Server(key, ServerInfo.name, ServerInfo.runTime);
+      this.#servers.push(server);
+    }
+  }
+
+  getChefs() {
+    return this.#chefs;
+  }
+
+  getServers() {
+    return this.#servers;
   }
 }
