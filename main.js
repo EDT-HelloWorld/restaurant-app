@@ -1,9 +1,12 @@
-import Restaurant from "./RestaurantApp.js";
+import { Restaurant } from "./src/model/Restaurant.js";
 
 class Main {
-  #restaurant = new Restaurant();
+  #koreanRestaurant = new Restaurant("Korean");
 
   start() {
-    this.#restaurant.start();
+    this.#koreanRestaurant.start();
   }
 }
+
+const main = new Main();
+main.start();
