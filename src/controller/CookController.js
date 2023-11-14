@@ -14,18 +14,15 @@ export class CookController {
     }
   }
 
-  findAvailable(order) {
+  findAvailable() {
     return new Promise((resolve) => {
       const timerId = setInterval(() => {
         if (this.availableChefs.length > 0) {
           clearInterval(timerId);
           const chef = this.#getAvailableChef();
-          chef.setState(CHEF_STATE.COOKING);
-          chef.setOrder(order);
-          this.view.setUpdateChef(chef);
           resolve(chef);
         }
-      }, 100);
+      }, 500);
     });
   }
 

@@ -53,14 +53,4 @@ export class Server {
       }, this.#runTime * 1000);
     });
   }
-
-  // async serve(order) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       order.setState(ORDER_STATE.DONE);
-  //       this.setState(SERVER_STATE.WAITING);
-  //       resolve(order);
-  //     }, this.#runTime * 1000);
-  //   });
-  // }
 }

@@ -35,29 +35,38 @@ class Main {
   startSimulation() {
     setInterval(async () => {
       const order = await this.OrderController.getNextOrder();
+      const chef = await this.CookController.findAvailable();
       order.setState(ORDER_STATE.COOKING);
-      const chef = await this.CookController.findAvailable(order);
-      chef
-        .cook(order)
-        .then((order) => {
-          order.setState(ORDER_STATE.COOKED);
-          this.CookController.returnChef(chef);
-          chef.setOrder(null);
-          this.#view.setUpdateChef(chef);
-          this.#view.setAddServer(order);
-          this.#view.deleteOrder(order);
-          return this.ServerController.findAvailable(order);
-        })
-        .then((server) => {
-          server.setState(SERVER_STATE.SERVING);
-          order.setState(ORDER_STATE.SERVING);
-          server.serve(order).then((order) => {
-            order.setState(ORDER_STATE.DONE);
-            this.ServerController.returnServer(server);
-            this.#view.doneServer(order);
-          });
-        });
-    }, 500);
+      this.#view.setUpdateOrderList(order);
+      chef.setOrder(order);
+      chef.setState(CHEF_STATE.COOKING);
+      this.#view.setUpdateChef(chef);
+      chef.cook(order).then((order) => {
+        order.setState(ORDER_STATE.COOKED);
+        this.CookController.returnChef(chef);
+        this.#view.setUpdateChef(chef);
+        this.#view.setAddServer(order);
+        this.#view.deleteOrder(order);
+        this.#restaurant.addServe(order);
+      });
+    }, 100);
+
+    setInterval(async () => {
+      const order = await this.ServerController.getNextServe();
+      const server = await this.ServerController.findAvailable();
+      order.setState(ORDER_STATE.SERVING);
+      server.setOrder(order);
+      server.setState(SERVER_STATE.WAITING);
+      this.#view.setUpdateServer(server);
+      server.serve(order).then((order) => {
+        order.setState(ORDER_STATE.DONE);
+        server.setState(SERVER_STATE.WAITING);
+        this.ServerController.returnServer(server);
+        this.#view.setUpdateServer(server);
+        server.setOrder(null);
+        this.#view.doneServer(order);
+      });
+    }, 100);
   }
 }
 

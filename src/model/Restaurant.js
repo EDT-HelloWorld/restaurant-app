@@ -7,6 +7,7 @@ import { Server } from './Server.js';
 export class Restaurant {
   #number;
   #orders;
+  #serveQueue;
   #chefs;
   #servers;
 
@@ -15,20 +16,36 @@ export class Restaurant {
     this.#orders = [];
     this.#chefs = [];
     this.#servers = [];
+    this.#serveQueue = [];
     this.setChef();
     this.setServer();
   }
 
   addOrder(foodName) {
-    console.log(this.#orders);
     const food = new Food(foodName);
     const order = new Order(this.#number++, food);
     this.#orders.push(order);
     return order;
   }
 
+  addServe(order) {
+    this.#serveQueue.push(order);
+  }
+
+  getNextServe() {
+    return this.#serveQueue.shift();
+  }
+
+  isServeQueueEmpty() {
+    return this.#serveQueue.length === 0;
+  }
+
+  isOrderEmpty() {
+    return this.#orders.length === 0;
+  }
+
   getNextOrder() {
-    return this.#orders.find((order) => order.getState() === ORDER_STATE.WAITING);
+    return this.#orders.shift();
   }
 
   setChef() {

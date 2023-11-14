@@ -44,15 +44,4 @@ export class Chef {
       }, order.getFood().getCookTime() * 1000);
     });
   }
-
-  // async cook(order) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       order.setState(ORDER_STATE.COOKED);
-  //       this.setState(CHEF_STATE.WAITING);
-  //       this.setOrder(null);
-  //       resolve(order);
-  //     }, order.getFood().getCookTime() * 1000);
-  //   });
-  // }
 }
