@@ -9,8 +9,8 @@
   <body>
     <h1>실습: 식당 시뮬레이션</h1>
     <section id="group-order-buttons">
-      <button id="gukbap">국밥</button>
-      <button id="stake">스테이크</button>
+      <button class="order-button" data-menu="sundae-soup">순대국</button>
+      <button class="order-button" data-menu="haejang-soup">해장국</button>
     </section>
     <section class="display-live">
       <div>
@@ -36,8 +36,8 @@
         </ul>
       </div>
       <div>
-        <h2>음식</h2>
-        <ul class="live-section" id="food-state">
+        <h2>서빙</h2>
+        <ul class="live-section" id="server-state">
           <li class="food">
             <span>김밥</span>
             <span>대기</span>
