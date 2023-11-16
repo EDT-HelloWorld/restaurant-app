@@ -38,37 +38,15 @@ class Main {
     let order = await this.getNextOrder();
 
     this.onCooking(chef, order);
-
-    this.renderUpdateOrderList(order);
-    this.renderUpdateChef(chef);
-
     order = await chef.cook();
-
-    order.setState(ORDER_STATE.COOKED);
-    this.#restaurant.returnChef(chef);
-    this.#view.renderUpdateChef(chef);
-    this.#view.renderAddServer(order);
-    this.#view.renderDeleteOrder(order);
-
-    this.#restaurant.addServeQueue(order);
+    this.cooked(chef, order);
 
     const server = await this.findAvailableServer();
-    order = await this.#restaurant.getNextServe();
+    order = this.#restaurant.getNextServe();
 
-    order.setState(ORDER_STATE.SERVING);
-    server.setOrder(order);
-    server.setState(SERVER_STATE.SERVING);
-    this.#view.renderUpdateServer(server);
-
+    this.onServe(server, order);
     await server.serve();
-
-    order.setState(ORDER_STATE.DONE);
-    this.#view.renderUpdateServer(server);
-    this.#view.renderDoneServer(order);
-
-    this.#restaurant.returnServer(server);
-    server.setState(SERVER_STATE.WAITING);
-    server.setOrder(null);
+    this.served(server, order);
   }
 
   /**
@@ -129,6 +107,48 @@ class Main {
     chef.setState(CHEF_STATE.COOKING);
     order.setState(ORDER_STATE.COOKING);
     chef.setOrder(order);
+    this.renderUpdateOrderList(order);
+    this.renderUpdateChef(chef);
+  }
+
+  /**
+   * @description 요리가 완료되었을 때의 후처리 작업
+   * @param {Chef} chef
+   * @param {Order} order
+   */
+  cooked(chef, order) {
+    order.setState(ORDER_STATE.COOKED);
+    this.#restaurant.returnChef(chef);
+    this.#view.renderUpdateChef(chef);
+    this.#view.renderAddServer(order);
+    this.#view.renderDeleteOrder(order);
+    this.#restaurant.addServeQueue(order);
+  }
+
+  /**
+   * @description 서빙을 시작하기 위한 전처리 작업
+   * @param {Server} server
+   * @param {Order} order
+   */
+  onServe(server, order) {
+    order.setState(ORDER_STATE.SERVING);
+    server.setOrder(order);
+    server.setState(SERVER_STATE.SERVING);
+    this.#view.renderUpdateServer(server);
+  }
+
+  /**
+   * @description 서빙이 완료되었을 때의 후처리 작업
+   * @param {Server} server
+   * @param {Order} order
+   */
+  served(server, order) {
+    order.setState(ORDER_STATE.DONE);
+    this.#view.renderUpdateServer(server);
+    this.#view.renderDoneServer(order);
+    this.#restaurant.returnServer(server);
+    server.setState(SERVER_STATE.WAITING);
+    server.setOrder(null);
   }
 
   /**
