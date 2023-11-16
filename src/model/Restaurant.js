@@ -6,27 +6,26 @@ import { Server } from './Server.js';
 
 export class Restaurant {
   #number;
-  #orders;
+  #ordersQueue;
   #serveQueue;
-  #workChefs;
-  #workServers;
   #availableChefs;
   #availableServers;
+  #workChefs;
+  #workServers;
 
   constructor() {
     this.#number = 1;
-    this.#orders = [];
-    this.#workChefs = [];
-    this.#workServers = [];
+    this.#ordersQueue = [];
     this.#serveQueue = [];
     this.#availableChefs = [];
     this.#availableServers = [];
-    this.#init();
+    this.#workChefs = [];
+    this.#workServers = [];
   }
 
-  #init() {
-    this.setChef();
-    this.setServer();
+  init() {
+    this.setWorkChef();
+    this.setWorkServer();
   }
 
   getAvailableChef() {
@@ -71,7 +70,7 @@ export class Restaurant {
     const food = new Food(foodName);
     const order = new Order(this.#number++, food);
 
-    this.#orders.push(order);
+    this.#ordersQueue.push(order);
     return order;
   }
 
@@ -88,32 +87,32 @@ export class Restaurant {
   }
 
   isOrderEmpty() {
-    return this.#orders.length === 0;
+    return this.#ordersQueue.length === 0;
   }
 
   getNextOrder() {
-    return this.#orders.shift();
+    return this.#ordersQueue.shift();
   }
 
-  setChef() {
+  setWorkChef() {
     for (let [key, chefInfo] of Object.entries(CHEF_LIST)) {
       const chef = new Chef(key, chefInfo.name);
       this.#workChefs.push(chef);
     }
   }
 
-  setServer() {
+  setWorkServer() {
     for (let [key, ServerInfo] of Object.entries(SERVER_LIST)) {
       const server = new Server(key, ServerInfo.name, ServerInfo.runTime);
       this.#workServers.push(server);
     }
   }
 
-  getTotalChefs() {
+  getTotalWorkingChefs() {
     return this.#workChefs;
   }
 
-  getServers() {
+  getTotalWorkingServers() {
     return this.#workServers;
   }
 }
