@@ -1,12 +1,10 @@
-import { MENU_LIST } from '../utils/constant.js';
-
 export class Food {
   #name;
   #cookTime;
 
-  constructor(menuName) {
-    this.#name = MENU_LIST[menuName].name;
-    this.#cookTime = MENU_LIST[menuName].cookTime;
+  constructor(name, cookTime) {
+    this.#name = name;
+    this.#cookTime = cookTime;
   }
 
   getName() {
