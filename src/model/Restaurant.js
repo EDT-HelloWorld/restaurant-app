@@ -1,4 +1,4 @@
-import { CHEF_LIST, SERVER_LIST } from "../utils/constant.js";
+import { CHEF_LIST, CHEF_STATE, SERVER_LIST } from "../utils/constant.js";
 import { Chef } from "./Chef.js";
 import { Food } from "./Food.js";
 import { Order } from "./Order.js";
@@ -8,17 +8,45 @@ export class Restaurant {
   #number;
   #orders;
   #serveQueue;
-  #chefs;
+  #workChefs;
   #servers;
+  #availableChefs;
 
   constructor() {
     this.#number = 1;
     this.#orders = [];
-    this.#chefs = [];
+    this.#workChefs = [];
     this.#servers = [];
     this.#serveQueue = [];
+    this.#availableChefs = [];
+    this.#init();
+  }
+
+  #init() {
     this.setChef();
     this.setServer();
+  }
+
+  getAvailableChef() {
+    return this.#availableChefs.shift();
+  }
+
+  returnChef(chef) {
+    chef.setState(CHEF_STATE.WAITING);
+    chef.setOrder(null);
+    this.setAvailableChefs(chef);
+  }
+
+  getAvailableChefs() {
+    return this.#availableChefs;
+  }
+
+  isAvailableChefs() {
+    return this.#availableChefs > 0;
+  }
+
+  setAvailableChefs(chef) {
+    this.#availableChefs.push(chef);
   }
 
   addOrder(foodName) {
@@ -52,7 +80,7 @@ export class Restaurant {
   setChef() {
     for (let [key, chefInfo] of Object.entries(CHEF_LIST)) {
       const chef = new Chef(key, chefInfo.name);
-      this.#chefs.push(chef);
+      this.#workChefs.push(chef);
     }
   }
 
@@ -64,7 +92,7 @@ export class Restaurant {
   }
 
   getChefs() {
-    return this.#chefs;
+    return this.#workChefs;
   }
 
   getServers() {
