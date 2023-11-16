@@ -74,7 +74,7 @@ class Main {
     chef.setState(CHEF_STATE.COOKING);
     this.#view.setUpdateChef(chef);
 
-    await chef.cook(order);
+    await chef.cook();
 
     order.setState(ORDER_STATE.COOKED);
     this.#restaurant.returnChef(chef);
