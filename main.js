@@ -25,19 +25,22 @@ class Main {
   }
 
   setPrepareOpen() {
-    this.setMenuButton();
+    this.renderMenuButton();
     this.setChefs();
     this.setServer();
   }
 
+  /**
+   * @description 레스토랑 시뮬레이션을 시작한다.
+   */
   async startSimulation() {
     const chef = await this.findAvailableChef();
     let order = await this.getNextOrder();
 
     this.onCooking(chef, order);
 
-    this.randerUpdateOrderList(order);
-    this.randerUpdateChef(chef);
+    this.renderUpdateOrderList(order);
+    this.renderUpdateChef(chef);
 
     order = await chef.cook();
 
@@ -68,6 +71,9 @@ class Main {
     server.setOrder(null);
   }
 
+  /**
+   * @description 레스토랑에서 일하는 전체 chef를 렌더링 및 셋팅한다.
+   */
   setChefs() {
     for (let chef of this.#restaurant.getTotalWorkingChefs()) {
       this.#view.setAddChef(chef.getId(), chef.getName());
@@ -75,12 +81,18 @@ class Main {
     }
   }
 
+  /**
+   * @description 레스토랑에서 일하는 전체 server를 셋팅한다.
+   */
   setServer() {
     for (let server of this.#restaurant.getTotalWorkingServers()) {
       this.#restaurant.setAvailableServers(server);
     }
   }
 
+  /**
+   * @returns {Promise<Server>} 놀고 있는 server 1명을 반환할 때까지 기다린다.
+   */
   findAvailableServer() {
     return new Promise((resolve) => {
       const timerId = setInterval(() => {
@@ -94,7 +106,7 @@ class Main {
   }
 
   /**
-   * @returns {Promise<Chef>} 놀고 있는 chef 1명을 반환한다.
+   * @returns {Promise<Chef>} 놀고 있는 chef 1명을 반환할 때까지 기다린다.
    */
   findAvailableChef() {
     return new Promise((resolve) => {
@@ -122,33 +134,43 @@ class Main {
   /**
    * @param {Order} order order list 상태를 렌더링한다.
    */
-  randerUpdateOrderList(order) {
+  renderUpdateOrderList(order) {
     this.#view.setUpdateOrderList(order);
   }
 
   /**
    * @param {Chef} chef chef 상태를 렌더링한다.
    */
-  randerUpdateChef(chef) {
+  renderUpdateChef(chef) {
     this.#view.setUpdateChef(chef);
   }
 
-  handleOrderButtonClick(menuName) {
-    const order = this.#restaurant.addOrder(menuName);
+  /**
+   * @description 메뉴 버튼 클릭시 호출되는 메서드
+   * @param {string} foodName 메뉴 이름
+   */
+  handleOrderButtonClick(foodName) {
+    if (this.#restaurant.isValidateFood(foodName) == false) {
+      return;
+    }
+    const order = this.#restaurant.addOrder(foodName);
     this.#view.setAddOrder(order);
     this.startSimulation();
   }
 
-  isOrderEmpty() {
-    return this.#restaurant.isOrderEmpty();
-  }
-
-  setMenuButton() {
+  /**
+   * @description 메뉴 버튼을 렌더링한다.
+   */
+  renderMenuButton() {
     for (let [key, menuInfo] of Object.entries(MENU_LIST)) {
       this.#view.setAddMenu(key, menuInfo);
     }
   }
 
+  /**
+   * @description 주문테이블에 있는 주문이 있는지 확인한다.
+   * @returns {Promise<Order>} 주문테이블에 있는 주문을 반환한다.
+   */
   getNextOrder() {
     return new Promise((resolve) => {
       const order = this.#restaurant.getNextOrder();

@@ -118,16 +118,12 @@ export class Restaurant {
   }
 
   /**
-   * @param {string} foodName 음식 이름 (key)
+   * @param {string} menuName 음식 이름 (key)
    * @returns {Order} 주문을 추가한다.
    */
-  addOrder(foodName) {
-    if (this.isValidateFood(foodName) == false) {
-      return;
-    }
-
-    const name = MENU_LIST[foodName].name;
-    const cookTime = MENU_LIST[foodName].cookTime;
+  addOrder(menuName) {
+    const name = MENU_LIST[menuName].name;
+    const cookTime = MENU_LIST[menuName].cookTime;
 
     const food = new Food(name, cookTime);
     const order = new Order(this.#number++, food);
