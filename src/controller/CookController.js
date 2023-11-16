@@ -1,4 +1,4 @@
-import { ORDER_STATE, CHEF_STATE } from '../utils/constant.js';
+import { CHEF_STATE } from "../utils/constant.js";
 
 export class CookController {
   constructor(restaurant, view) {

@@ -1,8 +1,8 @@
-import { CHEF_LIST, SERVER_LIST, ORDER_STATE } from '../utils/constant.js';
-import { Chef } from './Chef.js';
-import { Food } from './Food.js';
-import { Order } from './Order.js';
-import { Server } from './Server.js';
+import { CHEF_LIST, SERVER_LIST } from "../utils/constant.js";
+import { Chef } from "./Chef.js";
+import { Food } from "./Food.js";
+import { Order } from "./Order.js";
+import { Server } from "./Server.js";
 
 export class Restaurant {
   #number;
@@ -12,7 +12,7 @@ export class Restaurant {
   #servers;
 
   constructor() {
-    this.#number = 0;
+    this.#number = 1;
     this.#orders = [];
     this.#chefs = [];
     this.#servers = [];
@@ -24,6 +24,7 @@ export class Restaurant {
   addOrder(foodName) {
     const food = new Food(foodName);
     const order = new Order(this.#number++, food);
+
     this.#orders.push(order);
     return order;
   }

@@ -1,5 +1,3 @@
-import { ORDER_STATE, SERVER_STATE } from '../utils/constant.js';
-
 export class ServerController {
   constructor(restaurant, view) {
     this.restaurant = restaurant;

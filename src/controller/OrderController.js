@@ -1,4 +1,4 @@
-import { MENU_LIST, ORDER_STATE } from '../utils/constant.js';
+import { MENU_LIST } from "../utils/constant.js";
 
 export class OrderController {
   constructor(restaurant, view) {
