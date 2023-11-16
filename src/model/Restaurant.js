@@ -1,8 +1,8 @@
-import { CHEF_LIST, CHEF_STATE, SERVER_LIST } from "../utils/constant.js";
-import { Chef } from "./Chef.js";
-import { Food } from "./Food.js";
-import { Order } from "./Order.js";
-import { Server } from "./Server.js";
+import { CHEF_LIST, CHEF_STATE, SERVER_LIST } from '../utils/constant.js';
+import { Chef } from './Chef.js';
+import { Food } from './Food.js';
+import { Order } from './Order.js';
+import { Server } from './Server.js';
 
 export class Restaurant {
   #number;

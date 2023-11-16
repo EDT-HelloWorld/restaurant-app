@@ -1,11 +1,11 @@
-import { Restaurant } from "./src/model/Restaurant.js";
+import { Restaurant } from './src/model/Restaurant.js';
 import {
   CHEF_STATE,
   MENU_LIST,
   ORDER_STATE,
   SERVER_STATE,
-} from "./src/utils/constant.js";
-import { View } from "./src/view/View.js";
+} from './src/utils/constant.js';
+import { View } from './src/view/View.js';
 
 class Main {
   #restaurant;
