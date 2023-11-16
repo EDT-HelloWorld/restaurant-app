@@ -99,7 +99,7 @@ export class Restaurant {
   /**
    * @param {Order} order 서빙테이블에 서빙할 주문을 추가한다.
    */
-  addServe(order) {
+  addServeQueue(order) {
     this.#serveQueue.push(order);
   }
 
@@ -122,18 +122,27 @@ export class Restaurant {
    * @returns {Order} 주문을 추가한다.
    */
   addOrder(foodName) {
-    if (MENU_LIST[foodName] === undefined) {
+    if (this.isValidateFood(foodName) == false) {
       return;
     }
 
-    const name = MENU_LIST[menuName].name;
-    const cookTime = MENU_LIST[menuName].cookTime;
+    const name = MENU_LIST[foodName].name;
+    const cookTime = MENU_LIST[foodName].cookTime;
 
     const food = new Food(name, cookTime);
     const order = new Order(this.#number++, food);
 
     this.#ordersQueue.push(order);
     return order;
+  }
+
+  /**
+   *
+   * @param {string} foodName 음식 이름 (key)
+   * @returns {boolean} 레스토랑에 있는 주문 가능한 음식인지 여부를 반환한다.
+   */
+  isValidateFood(foodName) {
+    return MENU_LIST[foodName] !== undefined;
   }
 
   /**
