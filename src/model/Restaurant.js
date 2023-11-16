@@ -109,7 +109,7 @@ export class Restaurant {
     }
   }
 
-  getChefs() {
+  getTotalChefs() {
     return this.#workChefs;
   }
 

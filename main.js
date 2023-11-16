@@ -14,6 +14,7 @@ class Main {
   constructor() {
     this.#view = new View();
     this.#restaurant = new Restaurant();
+    this.#restaurant.init();
   }
 
   initializeSimulation() {
@@ -28,14 +29,14 @@ class Main {
   }
 
   setChefs() {
-    for (let chef of this.#restaurant.getChefs()) {
+    for (let chef of this.#restaurant.getTotalWorkingChefs()) {
       this.#view.setAddChef(chef.getId(), chef.getName());
       this.#restaurant.setAvailableChefs(chef);
     }
   }
 
   setServer() {
-    for (let server of this.#restaurant.getServers()) {
+    for (let server of this.#restaurant.getTotalWorkingServers()) {
       this.#restaurant.setAvailableServers(server);
     }
   }
