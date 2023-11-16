@@ -1,3 +1,5 @@
+import { Order } from '../model/Order.js';
+import { Server } from '../model/Server.js';
 import { CHEF_STATE } from '../utils/constant.js';
 
 export class View {
@@ -41,11 +43,11 @@ export class View {
   }
 
   /**
-   * @description 주문을 할 수 있는 버튼을 추가
+   * @description 주문을 할 수 있는 버튼을 추가한다.
    * @param {foodId} key 음식 id
    * @param {foodName} food 음식 이름
    */
-  setAddMenu(key, food) {
+  renderAddMenuButton(key, food) {
     const $menu = document.createElement('button');
 
     $menu.classList.add('order-button');
@@ -54,7 +56,12 @@ export class View {
     this.#$orderButton.appendChild($menu);
   }
 
-  setAddChef(id, name) {
+  /**
+   * @description chef를 요리사 란에 추가한다.
+   * @param {string} id
+   * @param {string} name
+   */
+  renderAddChef(id, name) {
     const $chef = document.createElement('li');
     const $name = document.createElement('span');
     const $state = document.createElement('span');
@@ -72,7 +79,11 @@ export class View {
     this.#$chefState.appendChild($chef);
   }
 
-  setAddOrder(order) {
+  /**
+   * @description 주문란에 주문을 추가한다.
+   * @param {Order} order
+   */
+  renderAddOrder(order) {
     const $order = document.createElement('li');
     const $number = document.createElement('span');
     const $name = document.createElement('span');
@@ -90,7 +101,11 @@ export class View {
     this.#$orderState.appendChild($order);
   }
 
-  setAddServer(order) {
+  /**
+   * @description 서빙란에 Order를 추가한다.
+   * @param {Order} order 서빙할 Order
+   */
+  renderAddServer(order) {
     const $serve = document.createElement('li');
     const $number = document.createElement('span');
     const $name = document.createElement('span');
@@ -115,7 +130,11 @@ export class View {
     this.#$serverState.appendChild($serve);
   }
 
-  setUpdateServer(server) {
+  /**
+   * @description Server 상태를 업데이트 한다.
+   * @param {Server} server
+   */
+  renderUpdateServer(server) {
     const $serve = document.querySelector(
       `#serve${server.getOrder().getOrderNo()}`
     );
@@ -126,13 +145,21 @@ export class View {
     $serverName.innerHTML = server.getName();
   }
 
-  setUpdateOrderList(order) {
+  /**
+   * @description Order 상태를 업데이트 한다.
+   * @param {Order} order
+   */
+  renderUpdateOrderList(order) {
     const $order = document.querySelector(`#order${order.getOrderNo()}`);
     const $state = $order.querySelector('.order-state');
     $state.innerHTML = order.getState();
   }
 
-  setUpdateChef(chef) {
+  /**
+   * @description Chef 상태를 업데이트 한다.
+   * @param {Chef} chef
+   */
+  renderUpdateChef(chef) {
     const $chef = document.querySelector(`#${chef.getId()}`);
     const $state = $chef.querySelector('.state');
     const $food = $chef.querySelector('.food');
@@ -141,12 +168,20 @@ export class View {
     $food.innerHTML = chef.getOrder()?.getFood().getName() ?? '';
   }
 
-  deleteOrder(order) {
+  /**
+   * @description 요리가 완료된 주문을 삭제한다.
+   * @param {Order} order
+   */
+  renderDeleteOrder(order) {
     const $order = document.querySelector(`#order${order.getOrderNo()}`);
     $order.remove();
   }
 
-  doneServer(order) {
+  /**
+   * @description 서빙이 완료된 주문를 표시한다.
+   * @param {Order} order
+   */
+  renderDoneServer(order) {
     const $serve = document.querySelector(`#serve${order.getOrderNo()}`);
 
     $serve.querySelector('.serve-server').innerHTML = '';

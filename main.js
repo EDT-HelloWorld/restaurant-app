@@ -46,9 +46,9 @@ class Main {
 
     order.setState(ORDER_STATE.COOKED);
     this.#restaurant.returnChef(chef);
-    this.#view.setUpdateChef(chef);
-    this.#view.setAddServer(order);
-    this.#view.deleteOrder(order);
+    this.#view.renderUpdateChef(chef);
+    this.#view.renderAddServer(order);
+    this.#view.renderDeleteOrder(order);
 
     this.#restaurant.addServeQueue(order);
 
@@ -58,13 +58,13 @@ class Main {
     order.setState(ORDER_STATE.SERVING);
     server.setOrder(order);
     server.setState(SERVER_STATE.SERVING);
-    this.#view.setUpdateServer(server);
+    this.#view.renderUpdateServer(server);
 
     await server.serve();
 
     order.setState(ORDER_STATE.DONE);
-    this.#view.setUpdateServer(server);
-    this.#view.doneServer(order);
+    this.#view.renderUpdateServer(server);
+    this.#view.renderDoneServer(order);
 
     this.#restaurant.returnServer(server);
     server.setState(SERVER_STATE.WAITING);
@@ -76,7 +76,7 @@ class Main {
    */
   setChefs() {
     for (let chef of this.#restaurant.getTotalWorkingChefs()) {
-      this.#view.setAddChef(chef.getId(), chef.getName());
+      this.#view.renderAddChef(chef.getId(), chef.getName());
       this.#restaurant.setAvailableChefs(chef);
     }
   }
@@ -135,14 +135,14 @@ class Main {
    * @param {Order} order order list 상태를 렌더링한다.
    */
   renderUpdateOrderList(order) {
-    this.#view.setUpdateOrderList(order);
+    this.#view.renderUpdateOrderList(order);
   }
 
   /**
    * @param {Chef} chef chef 상태를 렌더링한다.
    */
   renderUpdateChef(chef) {
-    this.#view.setUpdateChef(chef);
+    this.#view.renderUpdateChef(chef);
   }
 
   /**
@@ -154,7 +154,7 @@ class Main {
       return;
     }
     const order = this.#restaurant.addOrder(foodName);
-    this.#view.setAddOrder(order);
+    this.#view.renderAddOrder(order);
     this.startSimulation();
   }
 
@@ -163,7 +163,7 @@ class Main {
    */
   renderMenuButton() {
     for (let [key, menuInfo] of Object.entries(MENU_LIST)) {
-      this.#view.setAddMenu(key, menuInfo);
+      this.#view.renderAddMenuButton(key, menuInfo);
     }
   }
 
