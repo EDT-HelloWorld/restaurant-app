@@ -41,9 +41,9 @@ export class View {
   }
 
   /**
-   *
-   * @param {foodId} key
-   * @param {food} food
+   * @description 주문을 할 수 있는 버튼을 추가
+   * @param {foodId} key 음식 id
+   * @param {foodName} food 음식 이름
    */
   setAddMenu(key, food) {
     const $menu = document.createElement('button');
@@ -138,7 +138,7 @@ export class View {
     const $food = $chef.querySelector('.food');
 
     $state.innerHTML = chef.getState();
-    $food.innerHTML = chef.getOrder()?.getOrderNo() ?? '';
+    $food.innerHTML = chef.getOrder()?.getFood().getName() ?? '';
   }
 
   deleteOrder(order) {
