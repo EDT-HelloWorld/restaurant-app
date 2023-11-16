@@ -9,16 +9,18 @@ export class Restaurant {
   #orders;
   #serveQueue;
   #workChefs;
-  #servers;
+  #workServers;
   #availableChefs;
+  #availableServers;
 
   constructor() {
     this.#number = 1;
     this.#orders = [];
     this.#workChefs = [];
-    this.#servers = [];
+    this.#workServers = [];
     this.#serveQueue = [];
     this.#availableChefs = [];
+    this.#availableServers = [];
     this.#init();
   }
 
@@ -41,12 +43,28 @@ export class Restaurant {
     return this.#availableChefs;
   }
 
-  isAvailableChefs() {
-    return this.#availableChefs > 0;
+  isAvailableChef() {
+    return this.#availableChefs.length > 0;
   }
 
   setAvailableChefs(chef) {
     this.#availableChefs.push(chef);
+  }
+
+  setAvailableServers(server) {
+    this.#availableServers.push(server);
+  }
+
+  isAvailableServer() {
+    return this.#availableServers.length > 0;
+  }
+
+  getAvailableServer() {
+    return this.#availableServers.shift();
+  }
+
+  returnServer(server) {
+    this.#availableServers.push(server);
   }
 
   addOrder(foodName) {
@@ -87,7 +105,7 @@ export class Restaurant {
   setServer() {
     for (let [key, ServerInfo] of Object.entries(SERVER_LIST)) {
       const server = new Server(key, ServerInfo.name, ServerInfo.runTime);
-      this.#servers.push(server);
+      this.#workServers.push(server);
     }
   }
 
@@ -96,6 +114,6 @@ export class Restaurant {
   }
 
   getServers() {
-    return this.#servers;
+    return this.#workServers;
   }
 }

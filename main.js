@@ -1,4 +1,3 @@
-import { ServerController } from "./src/controller/ServerController.js";
 import { Restaurant } from "./src/model/Restaurant.js";
 import {
   CHEF_STATE,
@@ -15,21 +14,17 @@ class Main {
   constructor() {
     this.#view = new View();
     this.#restaurant = new Restaurant();
-
-    this.ServerController = new ServerController(this.#restaurant, this.#view);
-
-    this.controllerArray = [this.ServerController];
   }
 
   initializeSimulation() {
     this.#view.setClickOrder(this.handleOrderButtonClick.bind(this));
     this.setPrepareOpen();
-    this.controllerArray.forEach((controller) => controller.setPrepareOpen());
   }
 
   setPrepareOpen() {
     this.setMenuButton();
     this.setChefs();
+    this.setServer();
   }
 
   setChefs() {
@@ -39,10 +34,28 @@ class Main {
     }
   }
 
+  setServer() {
+    for (let server of this.#restaurant.getServers()) {
+      this.#restaurant.setAvailableServers(server);
+    }
+  }
+
+  findAvailableServer() {
+    return new Promise((resolve) => {
+      const timerId = setInterval(() => {
+        if (this.#restaurant.isAvailableServer() === true) {
+          clearInterval(timerId);
+          const server = this.#restaurant.getAvailableServer();
+          resolve(server);
+        }
+      }, 130);
+    });
+  }
+
   findAvailableChef() {
     return new Promise((resolve) => {
       const timerId = setInterval(() => {
-        if (this.#restaurant.isAvailableChefs() === false) {
+        if (this.#restaurant.isAvailableChef() === true) {
           clearInterval(timerId);
           const chef = this.#restaurant.getAvailableChef();
           resolve(chef);
@@ -51,41 +64,40 @@ class Main {
     });
   }
 
-  startSimulation() {
-    setTimeout(async () => {
-      const chef = await this.findAvailableChef();
-      const order = await this.getNextOrder();
-      order.setState(ORDER_STATE.COOKING);
-      this.#view.setUpdateOrderList(order);
-      chef.setOrder(order);
-      chef.setState(CHEF_STATE.COOKING);
-      this.#view.setUpdateChef(chef);
+  async startSimulation() {
+    const chef = await this.findAvailableChef();
+    const order = await this.getNextOrder();
+    order.setState(ORDER_STATE.COOKING);
+    this.#view.setUpdateOrderList(order);
+    chef.setOrder(order);
+    chef.setState(CHEF_STATE.COOKING);
+    this.#view.setUpdateChef(chef);
 
-      await chef.cook(order);
+    await chef.cook(order);
 
-      order.setState(ORDER_STATE.COOKED);
-      this.#restaurant.returnChef(chef);
-      this.#view.setUpdateChef(chef);
-      this.#view.setAddServer(order);
-      this.#view.deleteOrder(order);
-      this.#restaurant.addServe(order);
+    order.setState(ORDER_STATE.COOKED);
+    this.#restaurant.returnChef(chef);
+    this.#view.setUpdateChef(chef);
+    this.#view.setAddServer(order);
+    this.#view.deleteOrder(order);
+    this.#restaurant.addServe(order);
 
-      const server = await this.ServerController.findAvailable();
+    const server = await this.findAvailableServer();
+    const cookedOrder = await this.#restaurant.getNextServe();
 
-      order.setState(ORDER_STATE.SERVING);
-      server.setOrder(order);
-      server.setState(SERVER_STATE.WAITING);
-      this.#view.setUpdateServer(server);
+    cookedOrder.setState(ORDER_STATE.SERVING);
+    server.setOrder(cookedOrder);
+    server.setState(SERVER_STATE.WAITING);
+    this.#view.setUpdateServer(server);
 
-      await server.serve(order);
+    await server.serve(cookedOrder);
 
-      order.setState(ORDER_STATE.DONE);
-      server.setState(SERVER_STATE.WAITING);
-      this.ServerController.returnServer(server);
-      this.#view.setUpdateServer(server);
-      server.setOrder(null);
-      this.#view.doneServer(order);
-    }, 100);
+    cookedOrder.setState(ORDER_STATE.DONE);
+    server.setState(SERVER_STATE.WAITING);
+    this.#restaurant.returnServer(server);
+    this.#view.setUpdateServer(server);
+    server.setOrder(null);
+    this.#view.doneServer(cookedOrder);
   }
 
   handleOrderButtonClick(menuName) {
