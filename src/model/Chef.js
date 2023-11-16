@@ -57,7 +57,7 @@ export class Chef {
   }
 
   /**
-   * @param {Order} order 요리할 Order를 받아서 요리를 시작한다.
+   * @description 배정된 Order를 요리한다.
    * @returns {Promise<Order>} 요리가 완료된 Order를 반환한다.
    */
   cook() {

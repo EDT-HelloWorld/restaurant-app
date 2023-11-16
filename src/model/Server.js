@@ -65,7 +65,7 @@ export class Server {
   }
 
   /**
-   * @param {Order} order 서빙할 Order를 받아 서빙한다.
+   * @description 배정된 Order를 서빙한다.
    * @returns {Promise<Order>} 서빙이 완료된 Order를 반환한다.
    */
   serve() {
