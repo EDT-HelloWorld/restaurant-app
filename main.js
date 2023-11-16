@@ -91,7 +91,7 @@ class Main {
     server.setState(SERVER_STATE.WAITING);
     this.#view.setUpdateServer(server);
 
-    await server.serve(cookedOrder);
+    await server.serve();
 
     cookedOrder.setState(ORDER_STATE.DONE);
     server.setState(SERVER_STATE.WAITING);
